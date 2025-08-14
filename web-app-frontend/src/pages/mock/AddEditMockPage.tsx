@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { createMock, getMock, MockMeta, updateMock } from '../../api/service';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contextPath, methods, MockType } from '../../const/common.const';
-import { decodeToBuffer, encode } from '../../utils/base64';
 import MockForm from './MockForm';
+import { Base64 } from '@sibdevtools/frontend-common';
 
 export interface ModifyingMock {
   name: string;
@@ -58,7 +58,7 @@ const AddEditMockPage: React.FC = () => {
         delay: body.delay,
         type: body.type,
         meta: body.meta,
-        content: decodeToBuffer(body.content)
+        content: Base64.Decoder.text2buffer(body.content)
       });
     } catch (error) {
       console.error('Failed to fetch mock:', error);
@@ -84,7 +84,7 @@ const AddEditMockPage: React.FC = () => {
         type: modifyingMock.type,
         delay: modifyingMock.delay,
         meta: modifyingMock.meta,
-        content: encode(modifyingMock.content)
+        content: Base64.Encoder.buffer2text(modifyingMock.content)
       };
       if (mockId) {
         await updateMock(+serviceId, +mockId, mockData);

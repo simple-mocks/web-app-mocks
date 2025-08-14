@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Download05Icon } from 'hugeicons-react';
 import { downloadBase64File } from '../utils/files';
-import { encode } from '../utils/base64';
+import { Base64 } from '@sibdevtools/frontend-common';
 
 export interface StaticMockBinaryContentProps {
   isEditMode: boolean;
@@ -39,7 +39,7 @@ const StaticFileMockContent: React.FC<StaticMockBinaryContentProps> = ({
   };
 
   const downloadFile = () => {
-    downloadBase64File(encode(content), 'rs.bin', 'application/octet-stream');
+    downloadBase64File(Base64.Encoder.buffer2text(content), 'rs.bin', 'application/octet-stream');
   };
 
   if (isEditMode) {
