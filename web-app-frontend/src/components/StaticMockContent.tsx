@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { TextWrapIcon } from 'hugeicons-react';
 import { mimeToAceModeMap } from '../const/common.const';
 import AceEditor from 'react-ace';
 
@@ -8,6 +7,7 @@ import { loadSettings } from '../settings/utils';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
 import { getContentType } from '../utils/http';
 import { IAceEditor } from 'react-ace/lib/types';
+import { FluentTextWrap20Regular, FluentTextWrapOff20Regular } from '../const/icons';
 
 export interface StaticMockContentProps {
   content: ArrayBuffer;
@@ -64,7 +64,8 @@ const StaticMockContent: React.FC<StaticMockContentProps> = ({
           title={isWordWrapEnabled ? 'Unwrap' : 'Wrap'}
           onClick={() => setIsWordWrapEnabled((prev) => !prev)}
         >
-          <TextWrapIcon />
+          {isWordWrapEnabled && (<FluentTextWrap20Regular />)}
+          {!isWordWrapEnabled && (<FluentTextWrapOff20Regular />)}
         </Button>
       </ButtonGroup>
 

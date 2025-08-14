@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ButtonGroup, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-import { Delete01Icon, PencilEdit01Icon, PlusSignIcon, Upload05Icon } from 'hugeicons-react';
+import { PencilEdit01Icon, Upload05Icon } from 'hugeicons-react';
 import { getAllServices, deleteService, updateService, createService, Service } from '../../api/service';
-import CustomTable, { Cell, Row as TableRow } from '../../components/CustomTable';
+import CustomTable, { Row as TableRow } from '../../components/CustomTable';
 import { Loader } from '../../components/Loader';
 import { ServiceModal } from './ServiceModal';
 import { contextPath } from '../../const/common.const';
 import { useNavigate } from 'react-router-dom';
+import { LineiconsPlus, LineiconsTrash3 } from '../../const/icons';
 
 const ServiceListPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -136,7 +137,7 @@ const ServiceListPage: React.FC = () => {
               onClick={handleAddClick}
               title={'Add'}
             >
-              <PlusSignIcon />
+              <LineiconsPlus />
             </Button>
             <Button
               variant={'outline-info'}
@@ -194,7 +195,7 @@ const ServiceListPage: React.FC = () => {
                                 onClick={() => handleDelete(service.serviceId)}
                                 title={'Delete'}
                               >
-                                <Delete01Icon />
+                                <LineiconsTrash3 />
                               </Button>
                             </ButtonGroup>
                         }

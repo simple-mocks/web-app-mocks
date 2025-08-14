@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, FormLabel } from 'react-bootstrap';
-import { FloppyDiskIcon, MagicWand01Icon, TextWrapIcon } from 'hugeicons-react';
+import { FloppyDiskIcon } from 'hugeicons-react';
 import { downloadBase64File } from '../../../utils/files';
 import AceEditor from 'react-ace';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { Headers } from '../../../api/service';
 import { getContentTypeFromMap } from '../../../utils/http';
 import { IAceEditor } from 'react-ace/lib/types';
 import { Base64 } from '@sibdevtools/frontend-common';
+import { FluentMagicWand28Regular, FluentTextWrap20Regular, FluentTextWrapOff20Regular } from '../../../const/icons';
 
 export interface BodyRepresentationProps {
   title: string;
@@ -78,7 +79,8 @@ export const BodyRepresentation: React.FC<BodyRepresentationProps> = ({
         title={isWordWrapEnabled ? 'Unwrap' : 'Wrap'}
         onClick={() => setIsWordWrapEnabled((prev) => !prev)}
       >
-        <TextWrapIcon />
+        {isWordWrapEnabled && (<FluentTextWrap20Regular />)}
+        {!isWordWrapEnabled && (<FluentTextWrapOff20Regular />)}
       </Button>
       <Button
         variant="outline-primary"
@@ -101,7 +103,7 @@ export const BodyRepresentation: React.FC<BodyRepresentationProps> = ({
               setDecodedBody(JSON.stringify(json, null, 4));
             }}
           >
-            <MagicWand01Icon />
+            <FluentMagicWand28Regular />
           </Button>
         )
       }

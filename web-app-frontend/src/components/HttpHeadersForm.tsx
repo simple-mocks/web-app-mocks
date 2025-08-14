@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { MinusSignIcon, PlusSignIcon } from 'hugeicons-react';
 import { contentTypes } from '../const/common.const';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import { LineiconsMinus, LineiconsPlus } from '../const/icons';
 
 interface Header {
   key: string;
@@ -132,7 +132,7 @@ const HttpHeadersForm: React.FC<HttpHeadersFormProps> = ({
                   disabled={disabled || headers.length === 1}
                   title={'Remove'}
                 >
-                  <MinusSignIcon />
+                  <LineiconsMinus />
                 </Button>
                 <Button
                   variant="primary"
@@ -140,7 +140,7 @@ const HttpHeadersForm: React.FC<HttpHeadersFormProps> = ({
                   disabled={disabled || index !== headers.length - 1 || notFilledExist}
                   title={'Add'}
                 >
-                  <PlusSignIcon />
+                  <LineiconsPlus />
                 </Button>
               </InputGroup>
             </Form.Group>

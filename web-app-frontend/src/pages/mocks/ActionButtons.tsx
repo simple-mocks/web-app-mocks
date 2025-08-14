@@ -1,7 +1,8 @@
 import React, { MouseEvent } from 'react';
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Clock01Icon, Copy01Icon, Delete01Icon, PencilEdit01Icon, WorkHistoryIcon } from 'hugeicons-react';
+import { Clock01Icon, Copy01Icon, PencilEdit01Icon } from 'hugeicons-react';
 import { Mock } from '../../api/service';
+import { LineiconsTrash3 } from '../../const/icons';
 
 
 export interface ActionButtonsProps {
@@ -51,7 +52,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
       onClick={onDelete}
       title={'Delete'}
     >
-      <Delete01Icon />
+      <LineiconsTrash3 />
     </Button>
   </ButtonGroup>
 );

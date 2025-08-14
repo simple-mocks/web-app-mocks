@@ -6,7 +6,7 @@ import {
 } from '../../api/service';
 import {
   ArrowLeft01Icon, Download05Icon,
-  PlusSignIcon, Upload05Icon
+  Upload05Icon
 } from 'hugeicons-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contextPath, mockTypes } from '../../const/common.const';
@@ -15,6 +15,7 @@ import { Button, ButtonGroup, Col, Container, Form, Row } from 'react-bootstrap'
 import { useServiceMocks } from './serviceMocks';
 import { ActionButtons } from './ActionButtons';
 import { Loader } from '../../components/Loader';
+import { LineiconsPlus } from '../../const/icons';
 
 
 const ServiceMocksListPage: React.FC = () => {
@@ -82,7 +83,7 @@ const ServiceMocksListPage: React.FC = () => {
                   onClick={() => navigate(`${contextPath}service/${service.serviceId}/mocks/add`)}
                   title={'Add'}
                 >
-                  <PlusSignIcon />
+                  <LineiconsPlus />
                 </Button>
                 <Button
                   variant={'outline-primary'}

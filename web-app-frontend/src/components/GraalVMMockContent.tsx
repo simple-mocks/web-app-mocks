@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { TextWrapIcon } from 'hugeicons-react';
 import AceEditor from 'react-ace';
 
 import '../const/ace.imports';
 import { loadSettings } from '../settings/utils';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
 import { IAceEditor } from 'react-ace/lib/types';
+import { FluentTextWrap20Regular, FluentTextWrapOff20Regular } from '../const/icons';
 
 export interface GraalVMMockContentProps {
   mode: 'javascript' | 'python';
@@ -51,7 +51,8 @@ const GraalVMMockContent: React.FC<GraalVMMockContentProps> = ({
             title={isWordWrapEnabled ? 'Unwrap' : 'Wrap'}
             onClick={() => setIsWordWrapEnabled((prev) => !prev)}
           >
-            <TextWrapIcon />
+            {isWordWrapEnabled && (<FluentTextWrap20Regular />)}
+            {!isWordWrapEnabled && (<FluentTextWrapOff20Regular />)}
           </Button>
         </ButtonGroup>
 
