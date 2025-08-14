@@ -5,6 +5,7 @@ import AceEditor from 'react-ace';
 import '../const/ace.imports';
 import { loadSettings } from '../settings/utils';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
+import { IAceEditor } from 'react-ace/lib/types';
 
 export interface GraalVMMockContentProps {
   mode: 'javascript' | 'python';
@@ -22,6 +23,20 @@ const GraalVMMockContent: React.FC<GraalVMMockContentProps> = ({
                                                                }) => {
   const settings = loadSettings();
   const [isWordWrapEnabled, setIsWordWrapEnabled] = useState(true);
+
+  const handleLoad = (editor: IAceEditor) => {
+    editor.commands.addCommand({
+      name: 'openSearch',
+      bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
+      exec: (editor) => editor.execCommand('find'),
+    });
+
+    editor.commands.addCommand({
+      name: 'openReplace',
+      bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
+      exec: (editor) => editor.execCommand('replace'),
+    });
+  };
 
   return (
     <>
@@ -44,6 +59,7 @@ const GraalVMMockContent: React.FC<GraalVMMockContentProps> = ({
         <AceEditor
           mode={mode}
           theme={settings['aceTheme'].value}
+          onLoad={handleLoad}
           name="contentAceEditor"
           onChange={(it) => setContent(textEncoder.encode(it))}
           value={textDecoder.decode(content)}
@@ -51,12 +67,11 @@ const GraalVMMockContent: React.FC<GraalVMMockContentProps> = ({
           style={{
             resize: 'vertical',
             overflow: 'auto',
-            height: '480px',
             minHeight: '200px',
           }}
           fontSize={14}
           width="100%"
-          height="480px"
+          height="640px"
           readOnly={disabled}
           showPrintMargin={true}
           showGutter={true}

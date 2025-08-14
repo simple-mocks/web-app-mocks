@@ -8,6 +8,7 @@ import { loadSettings } from '../../../settings/utils';
 import { mimeToAceModeMap } from '../../../const/common.const';
 import { Headers } from '../../../api/service';
 import { getContentTypeFromMap } from '../../../utils/http';
+import { IAceEditor } from 'react-ace/lib/types';
 
 export interface BodyRepresentationProps {
   title: string;
@@ -31,6 +32,21 @@ export const BodyRepresentation: React.FC<BodyRepresentationProps> = ({
 
   const contentType = getContentTypeFromMap(headers) ?? 'text/plain';
   const aceMode = mimeToAceModeMap.get(contentType) || '';
+
+  const handleLoad = (editor: IAceEditor) => {
+    editor.commands.addCommand({
+      name: 'openSearch',
+      bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
+      exec: (editor) => editor.execCommand('find'),
+    });
+
+    editor.commands.addCommand({
+      name: 'openReplace',
+      bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
+      exec: (editor) => editor.execCommand('replace'),
+    });
+  };
+
   if (!aceMode) {
     return (<>
         <FormLabel className={'h4'} htmlFor={`bodyRepresentation-${invocationId}`}>{title}</FormLabel>
@@ -69,18 +85,18 @@ export const BodyRepresentation: React.FC<BodyRepresentationProps> = ({
     <AceEditor
       mode={aceMode}
       theme={settings['aceTheme'].value}
+      onLoad={handleLoad}
       name={`bodyRepresentation-${invocationId}`}
       value={decodeToText(body)}
       className={'rounded'}
       style={{
         resize: 'vertical',
         overflow: 'auto',
-        height: '480px',
         minHeight: '200px',
       }}
       fontSize={14}
       width="100%"
-      height="480px"
+      height="640px"
       showPrintMargin={true}
       showGutter={true}
       highlightActiveLine={true}
