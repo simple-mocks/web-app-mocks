@@ -10,8 +10,8 @@ import { IAceEditor } from 'react-ace/lib/types';
 import { FluentTextWrap20Regular, FluentTextWrapOff20Regular } from '../const/icons';
 
 export interface StaticMockContentProps {
-  content: ArrayBuffer;
-  setContent: (content: ArrayBuffer) => void;
+  content: Uint8Array;
+  setContent: (content: Uint8Array) => void;
   meta: { [key: string]: string };
   setMeta: (meta: { [key: string]: string }) => void;
   creation: boolean;

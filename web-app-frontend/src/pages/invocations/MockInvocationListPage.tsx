@@ -76,7 +76,7 @@ const MockInvocationListPage: React.FC = () => {
   };
 
   return (
-    <Container className="mt-4 mb-4">
+    <Container fluid className="mt-4 mb-4">
       <Row>
         <Col md={{ span: 1, offset: 2 }} className={'mb-2'}>
           <Button
@@ -94,7 +94,7 @@ const MockInvocationListPage: React.FC = () => {
       </Row>
       <Row>
         <Col md={{ span: 12 }}>
-          <Container className="mt-4">
+          <Container fluid className="mt-4">
             {loading ? (
               <Loader />
             ) : (

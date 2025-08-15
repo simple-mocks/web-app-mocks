@@ -9,8 +9,8 @@ import { FluentTextWrap20Regular, FluentTextWrapOff20Regular } from '../const/ic
 
 export interface GraalVMMockContentProps {
   mode: 'javascript' | 'python';
-  content: ArrayBuffer;
-  setContent: (content: ArrayBuffer) => void;
+  content: Uint8Array;
+  setContent: (content: Uint8Array) => void;
   disabled?: boolean;
 }
 

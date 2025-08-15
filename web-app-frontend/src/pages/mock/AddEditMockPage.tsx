@@ -12,7 +12,7 @@ export interface ModifyingMock {
   type: MockType;
   delay: number;
   meta: MockMeta;
-  content: ArrayBuffer;
+  content: Uint8Array;
 }
 
 const AddEditMockPage: React.FC = () => {
@@ -31,7 +31,7 @@ const AddEditMockPage: React.FC = () => {
     meta: {
       STATUS_CODE: '200'
     },
-    content: new ArrayBuffer(0)
+    content: new Uint8Array(0)
   });
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const AddEditMockPage: React.FC = () => {
         delay: body.delay,
         type: body.type,
         meta: body.meta,
-        content: Base64.Decoder.text2buffer(body.content)
+        content: Base64.Decoder.text2array(body.content)
       });
     } catch (error) {
       console.error('Failed to fetch mock:', error);
@@ -84,7 +84,7 @@ const AddEditMockPage: React.FC = () => {
         type: modifyingMock.type,
         delay: modifyingMock.delay,
         meta: modifyingMock.meta,
-        content: Base64.Encoder.buffer2text(modifyingMock.content)
+        content: Base64.Encoder.array2text(modifyingMock.content)
       };
       if (mockId) {
         await updateMock(+serviceId, +mockId, mockData);

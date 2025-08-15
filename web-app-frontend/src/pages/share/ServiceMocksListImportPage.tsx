@@ -105,7 +105,7 @@ const ServiceMocksListImportPage: React.FC = () => {
   };
 
   return (
-    <Container className="mt-4 mb-4">
+    <Container fluid className="mt-4 mb-4">
       <Row className={'mb-2'}>
         <Col md={{ span: 1, offset: 2 }} className={'mb-2'}>
           <Button

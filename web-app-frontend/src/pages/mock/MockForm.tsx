@@ -40,7 +40,7 @@ export const MockForm: React.FC<MockFormProps> = ({
   };
 
   return (
-    <Container className="mt-4 mb-4">
+    <Container fluid className="mt-4 mb-4">
       <Row className="mb-2">
         <Col md={{ span: 1, offset: 2 }}>
           <Button

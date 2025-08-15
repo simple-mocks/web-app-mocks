@@ -6,8 +6,8 @@ import { Base64 } from '@sibdevtools/frontend-common';
 
 export interface StaticMockBinaryContentProps {
   isEditMode: boolean;
-  content: ArrayBuffer;
-  setContent: (content: ArrayBuffer) => void;
+  content: Uint8Array;
+  setContent: (content: Uint8Array) => void;
   disabled?: boolean;
 }
 
@@ -17,12 +17,12 @@ const StaticFileMockContent: React.FC<StaticMockBinaryContentProps> = ({
                                                                          setContent,
                                                                          disabled
                                                                        }) => {
-  const getFileContent = useCallback((file: File): Promise<ArrayBuffer> => {
+  const getFileContent = useCallback((file: File): Promise<Uint8Array> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
       reader.onload = () => {
-        const binaryData = reader.result as ArrayBuffer;
+        const binaryData = new Uint8Array(reader.result as ArrayBuffer);
         resolve(binaryData);
       };
       reader.onerror = (error) => reject(error);
@@ -39,7 +39,7 @@ const StaticFileMockContent: React.FC<StaticMockBinaryContentProps> = ({
   };
 
   const downloadFile = () => {
-    downloadBase64File(Base64.Encoder.buffer2text(content), 'rs.bin', 'application/octet-stream');
+    downloadBase64File(Base64.Encoder.array2text(content), 'rs.bin', 'application/octet-stream');
   };
 
   if (isEditMode) {

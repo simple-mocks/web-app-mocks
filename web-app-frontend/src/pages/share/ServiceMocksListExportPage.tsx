@@ -41,7 +41,7 @@ const ServiceMocksListPage: React.FC = () => {
   };
 
   return (
-    <Container className={'mt-4 mb-4'}>
+    <Container fluid className={'mt-4 mb-4'}>
       <Row>
         <Col md={12}>
           <Row className={'mb-2'}>

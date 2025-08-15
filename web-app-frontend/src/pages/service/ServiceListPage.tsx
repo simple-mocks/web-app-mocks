@@ -125,7 +125,7 @@ const ServiceListPage: React.FC = () => {
   };
 
   return (
-    <Container className="mt-4 mb-4">
+    <Container fluid className="mt-4 mb-4">
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
           <span className={'h2'}>HTTP Services</span>
@@ -151,7 +151,7 @@ const ServiceListPage: React.FC = () => {
       </Row>
       <Row>
         <Col md={{ span: 10, offset: 1 }}>
-          <Container className="mt-4">
+          <Container fluid className="mt-4">
             {loading ? (
               <Loader />
             ) : (
