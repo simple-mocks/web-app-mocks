@@ -6,11 +6,10 @@ import StaticMockContent from '../../components/StaticMockContent';
 import GraalVMMockContent from '../../components/GraalVMMockContent';
 import StaticFileMockContent from '../../components/StaticFileMockContent';
 import { ArrowLeft01Icon, FloppyDiskIcon, InformationCircleIcon } from 'hugeicons-react';
-import { Loader } from '../../components/Loader';
 import './MockForm.css';
 import CodeDocumentation from './CodeDocumentation';
-import SuggestiveInput from '../../components/suggestive-input/SuggestiveInput';
 import { ModifyingMock } from './AddEditMockPage';
+import { Loader, SuggestiveInput } from '@sibdevtools/frontend-common';
 
 type MockFormProps = {
   loading: boolean;
@@ -40,8 +39,8 @@ export const MockForm: React.FC<MockFormProps> = ({
   };
 
   return (
-    <Container fluid className="mt-4 mb-4">
-      <Row className="mb-2">
+    <Container fluid className={'mt-4 mb-4'}>
+      <Row className={'mb-4'}>
         <Col md={{ span: 1, offset: 2 }}>
           <Button
             variant="outline-primary"
@@ -55,9 +54,7 @@ export const MockForm: React.FC<MockFormProps> = ({
           <h2>{isEditMode ? 'Edit Mock' : 'Add Mock'}</h2>
         </Col>
       </Row>
-      {loading ?
-        <Loader />
-        :
+      <Loader loading={loading}>
         <Row>
           <Col md={{ span: 10, offset: 1 }}>
             <Form className="mt-4" onSubmit={onSubmit}>
@@ -299,7 +296,7 @@ export const MockForm: React.FC<MockFormProps> = ({
             </Form>
           </Col>
         </Row>
-      }
+      </Loader>
     </Container>
   );
 };

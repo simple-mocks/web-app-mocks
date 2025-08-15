@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Alert, Badge, Button, Col, Container, Form, Row } from 'react-bootstrap';
-import CustomTable from '../../components/CustomTable';
-import { Loader } from '../../components/Loader';
 import { Exported, ExportedMock, ExportedService, importMocks } from '../../api/service';
 import { ArrowLeft01Icon, Upload05Icon } from 'hugeicons-react';
 import { contextPath, mockTypes } from '../../const/common.const';
 import { useNavigate, useParams } from 'react-router-dom';
+import { CustomTable, Loader } from '@sibdevtools/frontend-common';
+import { ClipboardBlock } from '../../components/clipboard/ClipboardBlock';
 
 
 interface ImportingService {
@@ -105,9 +105,9 @@ const ServiceMocksListImportPage: React.FC = () => {
   };
 
   return (
-    <Container fluid className="mt-4 mb-4">
-      <Row className={'mb-2'}>
-        <Col md={{ span: 1, offset: 2 }} className={'mb-2'}>
+    <Container fluid className={'mt-4 mb-4'}>
+      <Row className={'mb-4'}>
+        <Col md={{ span: 1, offset: 2 }}>
           <Button
             variant={'outline-primary'}
             onClick={() => navigate(serviceId ? `${contextPath}service/${serviceId}/mocks` : contextPath)}
@@ -117,7 +117,7 @@ const ServiceMocksListImportPage: React.FC = () => {
           </Button>
         </Col>
         <Col md={6}>
-          <span className={'h2'}>Import HTTP Mocks</span>
+          <span className={'h2'}>Import Mocks</span>
         </Col>
         <Col md={{ span: 1, offset: 1 }}>
           <Button
@@ -139,10 +139,8 @@ const ServiceMocksListImportPage: React.FC = () => {
               </Form.Group>
             </Col>
           </Row>
-          {loading ? (
-              <Loader />
-            ) :
-            error ? (
+          <Loader loading={loading}>
+            {error ? (
                 <Alert variant="danger" onClose={() => setError(null)} dismissible>
                   {error}
                 </Alert>
@@ -157,49 +155,95 @@ const ServiceMocksListImportPage: React.FC = () => {
                     <div key={service.code}>
                       <h3>Service: {service.code}</h3>
                       <CustomTable
-                        columns={[
-                          { key: 'import', label: 'Import' },
-                          { key: 'method', label: 'Method' },
-                          { key: 'name', label: 'Name' },
-                          { key: 'path', label: 'Path' },
-                          { key: 'type', label: 'Type' },
-                          { key: 'enabled', label: 'Enabled' },
-                        ]}
-                        data={service.mocks.map((mock, mockIndex) => ({
-                          mockIndex: mockIndex,
-                          import: {
-                            representation: (
-                              <Form.Check
+                        table={{ responsive: true }}
+                        thead={{
+                          columns: {
+                            import: {
+                              label: 'Import',
+                              className: 'text-center'
+                            },
+                            method: {
+                              label: 'Method',
+                              sortable: true,
+                              filterable: true,
+                              className: 'text-center'
+                            },
+                            name: {
+                              label: 'Name',
+                              sortable: true,
+                              filterable: true,
+                              className: 'text-center'
+                            },
+                            path: {
+                              label: 'Path',
+                              sortable: true,
+                              filterable: true,
+                              className: 'text-center'
+                            },
+                            type: {
+                              label: 'Type',
+                              sortable: true,
+                              filterable: true,
+                              className: 'text-center'
+                            },
+                            enabled: {
+                              label: 'Enabled',
+                              className: 'text-center'
+                            },
+                          },
+                          defaultSort: {
+                            column: 'mockIndex',
+                            direction: 'asc'
+                          }
+                        }}
+                        tbody={{
+                          data: service.mocks.map((mock, mockIndex) => ({
+                            mockIndex: mockIndex,
+                            import: {
+                              representation:
+                                <Form.Check
+                                  type="switch"
+                                  checked={mock.importing}
+                                  onChange={(e) =>
+                                    setImportingMockHandler(serviceIndex, mockIndex, e.target.checked)
+                                  }
+                                />,
+                              className: 'text-center align-middle',
+                            },
+                            method: {
+                              representation: <Badge bg="primary" className="align-middle">{mock.method}</Badge>,
+                              className: 'text-center align-middle',
+                              value: mock.method,
+                            },
+                            name: {
+                              representation: mock.name,
+                              className: 'align-middle',
+                              value: mock.name
+                            },
+                            path: {
+                              representation: <ClipboardBlock value={mock.path} />,
+                              value: mock.path,
+                            },
+                            type: {
+                              representation: mockTypes.get(mock.type) || mock.type,
+                              className: 'text-center align-middle',
+                              value: mock.type
+                            },
+                            enabled: {
+                              representation: <Form.Check
                                 type="switch"
-                                checked={mock.importing}
-                                onChange={(e) =>
-                                  setImportingMockHandler(serviceIndex, mockIndex, e.target.checked)
-                                }
-                              />
-                            ),
-                          },
-                          method: {
-                            representation: <Badge bg="primary" className="align-middle">{mock.method}</Badge>,
-                            value: mock.method,
-                          },
-                          name: mock.name,
-                          path: {
-                            representation: <code>{mock.path}</code>,
-                            value: mock.path,
-                          },
-                          type: mockTypes.get(mock.type) || mock.type,
-                          enabled: {
-                            representation: <Form.Check type="switch" checked={mock.enabled} readOnly={true} />,
-                          },
-                        }))}
-                        sortableColumns={['method', 'name', 'path', 'type']}
-                        sortByDefault={{column: 'mockIndex'}}
-                        filterableColumns={['method', 'name', 'path', 'type']}
-                        styleProps={{ centerHeaders: true, textCenterValues: true }}
+                                checked={mock.enabled}
+                                readOnly={true}
+                              />,
+                              className: 'text-center align-middle',
+                            },
+                          }))
+                        }}
                       />
                     </div>
                   ))
                 )}
+          </Loader>
         </Col>
       </Row>
     </Container>

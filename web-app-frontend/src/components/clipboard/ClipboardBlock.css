@@ -1,0 +1,38 @@
+.mock-clipboard {
+  position: relative;
+  border-radius: 8px;
+  display: block;
+  padding: 0.6em;
+  overflow: hidden;
+  word-break: break-word;
+  color: rgb(0, 0, 0);
+  background: rgb(248, 248, 255);
+}
+
+.mock-clipboard .mock-clipboard-button {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 8px;
+  z-index: 1;
+  opacity: 0.25;
+  filter: alpha(opacity=25); /* For IE8 and earlier */;
+}
+
+.mock-clipboard .mock-clipboard-button:hover {
+  opacity: 0.8;
+  filter: alpha(opacity=80); /* For IE8 and earlier */;
+}
+
+.mock-clipboard .mock-clipboard-button:active {
+  opacity: 1;
+  filter: alpha(opacity=100); /* For IE8 and earlier */;
+}
+
+.table td.fit,
+.table th.fit {
+  white-space: nowrap;
+  width: 1%;
+}

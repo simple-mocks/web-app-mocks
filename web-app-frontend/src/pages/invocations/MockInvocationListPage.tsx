@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
-import {
-  MockInvocationItem, getInvocationsByMock
-} from '../../api/service';
-import CustomTable from '../../components/CustomTable';
-import { Row as TableRow } from '../../components/CustomTable';
-import { Loader } from '../../components/Loader';
+import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
+import { getInvocationsByMock, MockInvocationItem } from '../../api/service';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contextPath } from '../../const/common.const';
 import { ArrowLeft01Icon } from 'hugeicons-react';
+import { CustomTable } from '@sibdevtools/frontend-common';
+import { CustomTableParts } from '@sibdevtools/frontend-common/dist/components/custom-table/types';
+import { ClipboardBlock } from '../../components/clipboard/ClipboardBlock';
 
 const MockInvocationListPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -71,14 +69,14 @@ const MockInvocationListPage: React.FC = () => {
     navigate(`${contextPath}service/${serviceId}/mocks`);
   };
 
-  const handleRowClick = (row: TableRow) => {
+  const handleRowClick = (row: CustomTableParts.Row) => {
     navigate(`${contextPath}service/${serviceId}/mocks/invocations/${mockId}/${row.invocationId}`);
   };
 
   return (
-    <Container fluid className="mt-4 mb-4">
-      <Row>
-        <Col md={{ span: 1, offset: 2 }} className={'mb-2'}>
+    <Container fluid className={'mt-4 mb-4'}>
+      <Row className={'mb-4'}>
+        <Col md={{ span: 1, offset: 2 }}>
           <Button
             variant={'outline-primary'}
             type={'button'}
@@ -93,63 +91,89 @@ const MockInvocationListPage: React.FC = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={{ span: 12 }}>
-          <Container fluid className="mt-4">
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                {error && (
-                  <Alert variant="danger" onClose={() => setError(null)} dismissible>
-                    {error}
-                  </Alert>
-                )}
-                {!error && (
-                  <CustomTable
-                    columns={[
-                      { key: 'method', label: 'Method' },
-                      { key: 'path', label: 'Path' },
-                      { key: 'timing', label: 'Timing' },
-                      { key: 'status', label: 'Status' },
-                      { key: 'createdAt', label: 'At' },
-                    ]}
-                    data={invocations.map((invocation) => {
-                      return {
-                        invocationId: invocation.invocationId,
-                        method: {
-                          representation: <span
-                            className={'badge text-bg-primary align-middle'}>{invocation.method}</span>,
-                          value: invocation.method
-                        },
-                        path: {
-                          representation: <code>{invocation.path}</code>,
-                          value: invocation.path
-                        },
-                        timing: {
-                          representation: <code>{invocation.timing}</code>,
-                          value: invocation.timing
-                        },
-                        status: {
-                          representation: <span
-                            className={`badge ${getStatusBadgeStyle(invocation.status)} align-middle`}>{invocation.status}</span>,
-                          value: invocation.status
-                        },
-                        createdAt: invocation.createdAt,
-                      };
-                    })}
-                    onRowClick={handleRowClick}
-                    sortableColumns={['method', 'path', 'timing', 'status', 'createdAt']}
-                    sortByDefault={{column: 'createdAt', direction: 'desc'}}
-                    filterableColumns={['method', 'path', 'timing', 'status', 'createdAt']}
-                    styleProps={{
-                      centerHeaders: true,
-                      textCenterValues: true,
-                    }}
-                  />
-                )}
-              </>
-            )}
-          </Container>
+        <Col xs={{ span: 12 }}>
+          {error && (
+            <Alert variant="danger" onClose={() => setError(null)} dismissible>
+              {error}
+            </Alert>
+          )}
+          {!error && (
+            <CustomTable
+              table={{ responsive: true }}
+              thead={{
+                columns: {
+                  method: {
+                    label: 'Method',
+                    sortable: true,
+                    filterable: true,
+                    className: 'text-center'
+                  },
+                  path: {
+                    label: 'Path',
+                    sortable: true,
+                    filterable: true,
+                    className: 'text-center'
+                  },
+                  timing: {
+                    label: 'Timing',
+                    sortable: true,
+                    filterable: true,
+                    className: 'text-center'
+                  },
+                  status: {
+                    label: 'Status',
+                    sortable: true,
+                    filterable: true,
+                    className: 'text-center'
+                  },
+                  createdAt: {
+                    label: 'At',
+                    sortable: true,
+                    filterable: true,
+                    className: 'text-center'
+                  },
+                },
+                defaultSort: {
+                  column: 'createdAt',
+                  direction: 'desc'
+                }
+              }}
+              tbody={{
+                data: invocations.map((invocation) => ({
+                  invocationId: invocation.invocationId,
+                  method: {
+                    representation: <span className={'badge text-bg-primary align-middle'}>{invocation.method}</span>,
+                    className: 'text-center align-middle',
+                    value: invocation.method
+                  },
+                  path: {
+                    representation: <ClipboardBlock value={invocation.path} />,
+                    value: invocation.path
+                  },
+                  timing: {
+                    representation: <code>{invocation.timing}</code>,
+                    className: 'text-center align-middle',
+                    value: invocation.timing
+                  },
+                  status: {
+                    representation: <span
+                      className={`badge ${getStatusBadgeStyle(invocation.status)} align-middle`}>{invocation.status}</span>,
+                    className: 'text-center align-middle',
+                    value: invocation.status
+                  },
+                  createdAt: {
+                    representation: invocation.createdAt,
+                    className: 'text-center align-middle',
+                    value: invocation.createdAt
+                  },
+                })),
+                rowBehavior: {
+                  handler: handleRowClick
+                }
+              }}
+              loading={loading}
+            />
+          )}
         </Col>
       </Row>
     </Container>

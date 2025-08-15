@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Alert, Button, Table } from 'react-bootstrap';
-import {
-  MockInvocation, getInvocation, MockInvocationDefaults,
-  MultiValueMap
-} from '../../../api/service';
-import { Loader } from '../../../components/Loader';
+import { Alert, Button, Col, Container, Row, Table } from 'react-bootstrap';
+import { getInvocation, MockInvocation, MockInvocationDefaults, MultiValueMap } from '../../../api/service';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contextPath } from '../../../const/common.const';
 import { ArrowLeft01Icon } from 'hugeicons-react';
 import { BodyRepresentation } from './BodyRepresentation';
+import { Loader } from '@sibdevtools/frontend-common';
+import { ClipboardBlock } from '../../../components/clipboard/ClipboardBlock';
 
-const MockInvocationPage: React.FC = () => {
+export const MockInvocationPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [invocation, setInvocation] = useState<MockInvocation>(MockInvocationDefaults);
   const [error, setError] = useState<string | null>(null);
@@ -77,16 +75,20 @@ const MockInvocationPage: React.FC = () => {
           {valIdx === 0 && (
             <td rowSpan={value.length}>{key}</td>
           )}
-          <td>{val || 'N/A'}</td>
+          <td>
+            <ClipboardBlock
+              value={val ?? 'N/A'}
+            />
+          </td>
         </tr>
       ));
     });
   };
 
   return (
-    <Container fluid className="mt-4 mb-4">
-      <Row>
-        <Col md={{ span: 1, offset: 2 }} className={'mb-2'}>
+    <Container fluid className={'mt-4 mb-4'}>
+      <Row className={'mb-4'}>
+        <Col md={{ span: 1, offset: 2 }}>
           <Button
             variant={'outline-primary'}
             type={'button'} onClick={handleBack}
@@ -100,116 +102,108 @@ const MockInvocationPage: React.FC = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={12}>
-          <Container fluid className="mt-4">
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                {error && (
-                  <Alert variant="danger" onClose={() => setError(null)} dismissible>
-                    {error}
-                  </Alert>
-                )}
-
-                {!error && (
-                  <Row>
-                    <Col md={{ offset: 1, span: 10 }}>
-                      <Table striped bordered hover responsive>
-                        <tbody>
-                        <tr>
-                          <td><strong>Remote Client Host</strong></td>
-                          <td>{invocation.remoteHost || 'N/A'}</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Remote Client Address</strong></td>
-                          <td>{invocation.remoteAddress || 'N/A'}</td>
-                        </tr>
-                        <tr>
-                          <td><strong>HTTP Method</strong></td>
-                          <td>{invocation.method}</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Request Path</strong></td>
-                          <td>{invocation.path}</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Execution Timing</strong></td>
-                          <td>{invocation.timing} ms</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Status Code</strong></td>
-                          <td>{invocation.status}</td>
-                        </tr>
-                        <tr>
-                          <td><strong>Invocation Date Time</strong></td>
-                          <td>{invocation.createdAt}</td>
-                        </tr>
-                        </tbody>
-                      </Table>
-
-                      <h4 className="mt-4">Query Params</h4>
-                      <Table striped bordered hover responsive>
-                        <thead>
-                        <tr>
-                          <th>Key</th>
-                          <th>Value</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {renderTableRows(invocation.queryParams)}
-                        </tbody>
-                      </Table>
-
-                      <h4 className="mt-4">Request Headers</h4>
-                      <Table striped bordered hover responsive>
-                        <thead>
-                        <tr>
-                          <th>Key</th>
-                          <th>Value</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {renderTableRows(invocation.rqHeaders)}
-                        </tbody>
-                      </Table>
-
-                      <BodyRepresentation
-                        title={'Request Body'}
-                        body={invocation.rqBody}
-                        headers={invocation.rqHeaders}
-                        invocationId={+(invocationId || '0')}
-                      />
-
-                      <h4 className="mt-4">Response Headers</h4>
-                      <Table striped bordered hover responsive>
-                        <thead>
-                        <tr>
-                          <th>Key</th>
-                          <th>Value</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {renderTableRows(invocation.rsHeaders)}
-                        </tbody>
-                      </Table>
-
-                      <BodyRepresentation
-                        title={'Response Body'}
-                        body={invocation.rsBody}
-                        headers={invocation.rsHeaders}
-                        invocationId={+(invocationId || '0')}
-                      />
-                    </Col>
-                  </Row>
-                )}
-              </>
+        <Col xs={12}>
+          <Loader loading={loading}>
+            {error && (
+              <Alert variant="danger" onClose={() => setError(null)} dismissible>
+                {error}
+              </Alert>
             )}
-          </Container>
+
+            {!error && (
+              <Row>
+                <Col md={{ offset: 1, span: 10 }}>
+                  <Table striped bordered hover responsive>
+                    <tbody>
+                    <tr>
+                      <td><strong>Remote Client Host</strong></td>
+                      <td>{invocation.remoteHost || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Remote Client Address</strong></td>
+                      <td>{invocation.remoteAddress || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>HTTP Method</strong></td>
+                      <td>{invocation.method}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Request Path</strong></td>
+                      <td>{invocation.path}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Execution Timing</strong></td>
+                      <td>{invocation.timing} ms</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Status Code</strong></td>
+                      <td>{invocation.status}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Invocation Date Time</strong></td>
+                      <td>{invocation.createdAt}</td>
+                    </tr>
+                    </tbody>
+                  </Table>
+
+                  <h4 className="mt-4">Query Params</h4>
+                  <Table striped bordered hover responsive>
+                    <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {renderTableRows(invocation.queryParams)}
+                    </tbody>
+                  </Table>
+
+                  <h4 className="mt-4">Request Headers</h4>
+                  <Table striped bordered hover responsive>
+                    <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {renderTableRows(invocation.rqHeaders)}
+                    </tbody>
+                  </Table>
+
+                  <BodyRepresentation
+                    title={'Request Body'}
+                    body={invocation.rqBody}
+                    headers={invocation.rqHeaders}
+                    invocationId={+(invocationId || '0')}
+                  />
+
+                  <h4 className="mt-4">Response Headers</h4>
+                  <Table striped bordered hover responsive>
+                    <thead>
+                    <tr>
+                      <th>Key</th>
+                      <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {renderTableRows(invocation.rsHeaders)}
+                    </tbody>
+                  </Table>
+
+                  <BodyRepresentation
+                    title={'Response Body'}
+                    body={invocation.rsBody}
+                    headers={invocation.rsHeaders}
+                    invocationId={+(invocationId || '0')}
+                  />
+                </Col>
+              </Row>
+            )}
+          </Loader>
         </Col>
       </Row>
     </Container>
   );
 };
-
-export default MockInvocationPage;

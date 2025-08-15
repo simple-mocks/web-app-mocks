@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonGroup, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Alert, Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap';
 import { PencilEdit01Icon, Upload05Icon } from 'hugeicons-react';
-import { getAllServices, deleteService, updateService, createService, Service } from '../../api/service';
-import CustomTable, { Row as TableRow } from '../../components/CustomTable';
-import { Loader } from '../../components/Loader';
+import { createService, deleteService, getAllServices, Service, updateService } from '../../api/service';
 import { ServiceModal } from './ServiceModal';
 import { contextPath } from '../../const/common.const';
 import { useNavigate } from 'react-router-dom';
 import { LineiconsPlus, LineiconsTrash3 } from '../../const/icons';
+import { CustomTable } from '@sibdevtools/frontend-common';
+import { CustomTableParts } from '@sibdevtools/frontend-common/dist/components/custom-table/types';
 
 const ServiceListPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -120,15 +120,15 @@ const ServiceListPage: React.FC = () => {
     }
   };
 
-  const handleCodeClick = (row: TableRow) => {
+  const handleCodeClick = (row: CustomTableParts.Row) => {
     navigate(`${contextPath}service/${row.serviceId}/mocks`);
   };
 
   return (
-    <Container fluid className="mt-4 mb-4">
-      <Row>
+    <Container fluid className={'mt-4 mb-4'}>
+      <Row className={'mb-4'}>
         <Col md={{ span: 6, offset: 3 }}>
-          <span className={'h2'}>HTTP Services</span>
+          <span className={'h2'}>Services</span>
         </Col>
         <Col md={{ span: 1, offset: 1 }}>
           <ButtonGroup>
@@ -150,69 +150,73 @@ const ServiceListPage: React.FC = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={{ span: 10, offset: 1 }}>
-          <Container fluid className="mt-4">
-            {loading ? (
-              <Loader />
-            ) : (
-              <>
-                {error && (
-                  <Alert variant="danger" onClose={() => setError(null)} dismissible>
-                    {error}
-                  </Alert>
-                )}
-                {minorError && (
-                  <Alert variant="danger" onClose={() => setMinorError(null)} dismissible>
-                    {minorError}
-                  </Alert>
-                )}
-                {!error && (
-                  <CustomTable
-                    columns={[
-                      { key: 'code', label: 'Code' },
-                      { key: 'actions', label: 'Actions' },
-                    ]}
-                    data={services.map((service) => {
-                      return {
-                        serviceId: service.serviceId,
-                        code: {
-                          representation: <code>{service.code}</code>,
-                          onClick: handleCodeClick,
-                          value: service.code,
-                        },
-                        actions: {
-                          representation:
-                            <ButtonGroup>
-                              <Button
-                                variant={'primary'}
-                                onClick={() => handleEditClick(service)}
-                                title={'Edit'}
-                              >
-                                <PencilEdit01Icon />
-                              </Button>
-                              <Button
-                                variant={'danger'}
-                                onClick={() => handleDelete(service.serviceId)}
-                                title={'Delete'}
-                              >
-                                <LineiconsTrash3 />
-                              </Button>
-                            </ButtonGroup>
-                        }
-                      };
-                    })}
-                    sortableColumns={['code']}
-                    sortByDefault={{column: 'serviceId'}}
-                    filterableColumns={['code']}
-                    styleProps={{
-                      centerHeaders: true,
-                      textCenterValues: true,
-                    }}
-                  />
-                )}
-              </>
-            )}
-          </Container>
+        <Col xs={12}>
+          {error && (
+            <Alert variant="danger" onClose={() => setError(null)} dismissible>
+              {error}
+            </Alert>
+          )}
+          {minorError && (
+            <Alert variant="danger" onClose={() => setMinorError(null)} dismissible>
+              {minorError}
+            </Alert>
+          )}
+          {!error && (
+            <CustomTable
+              table={{ responsive: true }}
+              thead={{
+                columns: {
+                  code: {
+                    label: 'Code',
+                    sortable: true,
+                    filterable: true,
+                    className: 'text-center'
+                  },
+                  actions: {
+                    label: 'Actions',
+                    className: 'text-center'
+                  }
+                },
+                defaultSort: {
+                  column: 'serviceId',
+                  direction: 'asc'
+                }
+              }}
+              tbody={{
+                data: services.map((service) => ({
+                    serviceId: service.serviceId,
+                    code: {
+                      representation: <code>{service.code}</code>,
+                      onClick: handleCodeClick,
+                      value: service.code,
+                      className: 'text-center'
+                    },
+                    actions: {
+                      representation:
+                        <ButtonGroup>
+                          <Button
+                            variant={'primary'}
+                            onClick={() => handleEditClick(service)}
+                            title={'Edit'}
+                          >
+                            <PencilEdit01Icon />
+                          </Button>
+                          <Button
+                            variant={'danger'}
+                            onClick={() => handleDelete(service.serviceId)}
+                            title={'Delete'}
+                          >
+                            <LineiconsTrash3 />
+                          </Button>
+                        </ButtonGroup>,
+                      className: 'text-center'
+                    }
+                  }
+                ))
+              }}
+              loading={loading}
+            />
+          )}
         </Col>
       </Row>
 
