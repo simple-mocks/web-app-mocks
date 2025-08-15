@@ -165,6 +165,7 @@ const ServiceListPage: React.FC = () => {
             <CustomTable
               table={{ responsive: true }}
               thead={{
+                tableId: 'services-table',
                 columns: {
                   code: {
                     label: 'Code',

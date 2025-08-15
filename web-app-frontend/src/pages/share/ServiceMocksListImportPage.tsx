@@ -157,6 +157,7 @@ const ServiceMocksListImportPage: React.FC = () => {
                       <CustomTable
                         table={{ responsive: true }}
                         thead={{
+                          tableId: 'service-mocks-import-table',
                           columns: {
                             import: {
                               label: 'Import',

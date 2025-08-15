@@ -98,6 +98,7 @@ const ServiceMocksListPage: React.FC = () => {
           <CustomTable
             table={{ responsive: true }}
             thead={{
+              tableId: 'service-mocks-table',
               columns: {
                 method: {
                   label: 'Method',

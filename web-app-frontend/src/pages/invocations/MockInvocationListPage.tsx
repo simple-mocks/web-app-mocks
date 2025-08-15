@@ -101,6 +101,7 @@ const MockInvocationListPage: React.FC = () => {
             <CustomTable
               table={{ responsive: true }}
               thead={{
+                tableId: 'mock-invocation-table',
                 columns: {
                   method: {
                     label: 'Method',

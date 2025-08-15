@@ -67,6 +67,7 @@ const ServiceMocksListPage: React.FC = () => {
           <CustomTable
             table={{ responsive: true }}
             thead={{
+              tableId: 'service-mocks-export-table',
               columns: {
                 export: {
                   label: 'Export',
